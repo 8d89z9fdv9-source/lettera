@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#141922">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Una lettera">
+<meta property="og:url" content="https://8d89z9fdv9-source.github.io/lettera/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='8' width='26' height='17' rx='2' fill='%23f2ece0'/%3E%3Cpath d='M3 9l13 9 13-9' fill='none' stroke='%2322305a' stroke-width='2'/%3E%3C/svg%3E">
+<style>[hidden]{display:none!important}</style>
+<title>Una lettera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Mrs+Saint+Delafield&family=Pinyon+Script&family=Playwrite+IT+Moderna:wght@100..400&display=swap">
+<style>
+/* Essenziale: scrivania blu notte, busta avorio con il solo nome, sigillo blu; poi il foglio liscio che riempie lo schermo e scorre */
+:root{
+  --desk:#141922;
+  --desk-hi:#2c3341;
+  --desk-lo:#090c11;
+  --env:#f2ece0;
+  --paper:#f7f2e8;
+  --ink:#1d2444;
+  --ink-wet:#33479a;
+  --gold-hi:#d8c294;
+  --script:"Pinyon Script","Snell Roundhand",cursive;
+  --hand:"Playwrite IT Moderna","Bradley Hand","Segoe Print",cursive;
+  --sign:"Mrs Saint Delafield","Snell Roundhand","Segoe Script",cursive;
+  --serif:"Cormorant Garamond","Cormorant",Georgia,serif;
+  --noise:linear-gradient(transparent,transparent);
+  --liner-bg:var(--noise),linear-gradient(180deg,#1e2840,#141b2c);
+  color-scheme:dark;
+}
+html,body{height:100%}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--desk);color:var(--gold-hi);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+.defs{position:absolute;width:0;height:0}
+.desk{position:fixed;inset:0;background:radial-gradient(85% 65% at 50% 32%,var(--desk-hi),var(--desk) 58%,var(--desk-lo))}
+
+/* ---------- busta ---------- */
+#stage{position:fixed;inset:0;display:grid;place-items:center;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:calc(env(safe-area-inset-top,0px) + 24px) calc(env(safe-area-inset-bottom,0px) + 24px);
+  transition:transform .95s cubic-bezier(.5,0,.75,.15),opacity .8s ease-in .1s}
+#stage.away{transform:translateY(75vh) rotate(-5deg);opacity:0;pointer-events:none}
+.wrap{display:grid;justify-items:center;gap:30px;animation:arrive 1.2s cubic-bezier(.2,.7,.2,1) both}
+@keyframes arrive{from{transform:translateY(30px) rotate(2deg);opacity:0}}
+.scene{perspective:1400px}
+.card{--w:min(84vw,400px);position:relative;width:var(--w);aspect-ratio:162/114;transform-style:preserve-3d;transform:rotateY(0deg) rotateZ(-1.5deg) scale(1);cursor:pointer;outline:none}
+.card.flipping{animation:flip 1.05s cubic-bezier(.45,.05,.25,1) forwards}
+@keyframes flip{
+  from{transform:rotateY(0deg) rotateZ(-1.5deg) scale(1)}
+  50%{transform:rotateY(90deg) rotateZ(0deg) scale(1.06)}
+  to{transform:rotateY(180deg) rotateZ(1.5deg) scale(1)}
+}
+.card.flat{transform:rotateZ(-1.5deg);transform-style:flat}
+.face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.front{background:var(--noise),linear-gradient(160deg,#f5f0e5,#ece4d5);border-radius:2px;box-shadow:0 26px 44px -16px rgba(0,0,0,.7),0 2px 5px rgba(0,0,0,.3)}
+.back{transform:rotateY(180deg);perspective:1000px}
+.card.flat .front{display:none}
+.card.flat .back{transform:none}
+.card:focus-visible .front,.card:focus-visible .inside{outline:1px solid var(--gold-hi);outline-offset:8px}
+
+.to{position:absolute;left:0;right:0;top:50%;margin:0;transform:translateY(-50%);text-align:center;color:var(--ink)}
+.to-name{display:block;font:400 calc(var(--w)*.15)/1.2 var(--script);padding:0 .2em}
+
+.inside{position:absolute;inset:0;z-index:1;border-radius:2px;background:var(--liner-bg);
+  box-shadow:0 26px 44px -16px rgba(0,0,0,.7),0 2px 5px rgba(0,0,0,.3),inset 0 8px 12px -6px rgba(0,0,0,.55)}
+.flap{position:absolute;inset:0;z-index:5;transform-origin:50% 0;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.45,.05,.3,1)}
+.flap.up{transform:rotateX(180deg)}
+.flap.under{z-index:2}
+.fl{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.fl .shape{position:absolute;inset:0;filter:drop-shadow(0 1.5px 1.5px rgba(70,50,20,.32))}
+.fl.out .shape::before{content:"";position:absolute;inset:0;background:var(--noise),linear-gradient(#f6f1e6,#ece5d6);clip-path:polygon(0 0,100% 0,53% 57%,50% 59.5%,47% 57%)}
+.fl.in{transform:rotateX(180deg);display:none}
+.back.opening .fl.in{display:block}
+.fl.in .shape::before{content:"";position:absolute;inset:0;background:var(--liner-bg);clip-path:polygon(0 100%,100% 100%,53% 43%,50% 40.5%,47% 43%)}
+
+.letter{position:absolute;left:5.5%;right:5.5%;top:6%;height:80%;z-index:3;background:var(--noise),var(--paper);border-radius:1px;
+  box-shadow:0 1px 2px rgba(40,30,10,.25);transition:transform 1.1s cubic-bezier(.35,.1,.25,1)}
+.letter::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(60,45,20,.1),transparent 18%,transparent 82%,rgba(60,45,20,.06))}
+
+.pocket{position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:2px;overflow:hidden}
+.pk{position:absolute;inset:0;filter:drop-shadow(0 0 1px rgba(70,50,20,.38))}
+.pk::before{content:"";position:absolute;inset:0;background:var(--noise),var(--c)}
+.pk.l{--c:linear-gradient(90deg,#f0e9dc,#e9e1d1)}
+.pk.l::before{clip-path:polygon(0 0,52% 54%,0 100%)}
+.pk.r{--c:linear-gradient(270deg,#f0e9dc,#e7dfce)}
+.pk.r::before{clip-path:polygon(100% 0,48% 54%,100% 100%)}
+.pk.b{--c:linear-gradient(0deg,#f4eee3,#ebe3d3);filter:drop-shadow(0 -1px 2px rgba(70,50,20,.28))}
+.pk.b::before{clip-path:polygon(0 100%,50% 45%,100% 100%)}
+
+.seal{position:absolute;left:50%;top:59%;width:19%;aspect-ratio:1;z-index:6;transform:translate(-50%,-50%) rotate(-6deg);
+  border:0;padding:0;background:none;border-radius:50%;cursor:pointer;filter:drop-shadow(0 2px 2px rgba(5,8,20,.5))}
+.seal:focus-visible{outline:1px solid var(--gold-hi);outline-offset:5px}
+.back.ready .seal{animation:nudge 2.4s ease-in-out infinite}
+@keyframes nudge{50%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.06)}}
+.half{position:absolute;inset:0;transition:transform .6s cubic-bezier(.3,.6,.4,1),opacity .45s ease .15s}
+.half svg{display:block;width:100%;height:100%}
+.h1{clip-path:polygon(0 0,56% 0,47% 28%,57% 50%,45% 74%,53% 100%,0 100%)}
+.h2{clip-path:polygon(56% 0,100% 0,100% 100%,53% 100%,45% 74%,57% 50%,47% 28%)}
+.seal.broken{animation:none;pointer-events:none}
+.seal.broken .h1{transform:translate(-40%,34%) rotate(-28deg);opacity:0}
+.seal.broken .h2{transform:translate(42%,46%) rotate(24deg);opacity:0}
+.seal-l{font-family:var(--serif);font-style:italic;font-weight:500;font-size:40px;fill:#0c1328}
+.seal-l.hi{fill:rgba(165,185,235,.38)}
+
+.hint{margin:0;min-height:1.4em;font:italic 400 17px/1.4 var(--serif);letter-spacing:.03em;color:rgba(216,194,148,.8);transition:opacity .5s}
+.hint.off{opacity:0}
+
+/* ---------- foglio che si spiega ---------- */
+#foldwrap{position:fixed;inset:0;z-index:20;perspective:1800px;pointer-events:none}
+.fold{position:absolute;transform-style:preserve-3d;visibility:hidden}
+.pn{position:absolute;left:0;right:0;height:calc(100% / 3 + .5px);background:var(--noise),var(--paper);box-shadow:0 6px 14px -8px rgba(0,0,0,.4)}
+.pn::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity .6s}
+.pn.t{top:0;transform-origin:50% 100%;transition:transform .7s cubic-bezier(.45,.1,.25,1)}
+.pn.m{top:calc(100% / 3)}
+.pn.b{top:calc(200% / 3);transform-origin:50% 0;transition:transform .7s cubic-bezier(.45,.1,.25,1);box-shadow:0 30px 60px -22px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.25)}
+.pn.t::after{background:linear-gradient(0deg,rgba(60,45,20,.22),transparent 70%)}
+.pn.b::after{background:linear-gradient(180deg,rgba(60,45,20,.18),transparent 70%)}
+.fold.folded .pn.t{transform:translateZ(3px) rotateX(-179deg)}
+.fold.folded .pn.b{transform:translateZ(1px) rotateX(179.5deg)}
+.fold.folded .pn::after{opacity:1}
+.fold.t-open .pn.t{transform:translateZ(0) rotateX(0deg)}
+.fold.t-open .pn.t::after{opacity:0}
+.fold.b-open .pn.b{transform:translateZ(0) rotateX(0deg)}
+.fold.b-open .pn.b::after{opacity:0}
+
+/* ---------- lettura ---------- */
+#read{position:fixed;inset:0;z-index:10;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;visibility:hidden;transition:opacity .45s;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:calc(env(safe-area-inset-top,0px) + 20px) calc(env(safe-area-inset-bottom,0px) + 28px)}
+#read.show{visibility:visible}
+.sheet{position:relative;max-width:560px;margin:0 auto}
+.paper{position:relative;box-sizing:border-box;
+  min-height:min(calc(100vh - 48px),792px);min-height:min(calc(100dvh - 48px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)),792px);
+  padding:clamp(26px,7vw,54px) clamp(22px,6.5vw,56px) clamp(36px,8vw,60px);
+  background:var(--noise),var(--paper);color:var(--ink);box-shadow:0 30px 60px -22px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.25);
+  font-family:var(--hand);font-weight:250;font-size:clamp(15px,13.4px + .55vw,18px);line-height:1.95}
+.paper::after{content:"";position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(180deg,transparent calc(var(--c1,33%) - 10px),rgba(60,45,20,.03) calc(var(--c1,33%) - 1px),rgba(255,255,255,.35) var(--c1,33%),transparent calc(var(--c1,33%) + 10px)),
+  linear-gradient(180deg,transparent calc(var(--c2,66%) - 10px),rgba(255,255,255,.3) calc(var(--c2,66%) - 1px),rgba(60,45,20,.04) var(--c2,66%),transparent calc(var(--c2,66%) + 10px))}
+.paper p{margin:0}
+.paper .date{text-align:right;margin-bottom:1.5em;font-size:.94em}
+.paper .body{display:grid;gap:.9em}
+.paper .body p{text-indent:1.6em;text-wrap:pretty}
+.paper .closing{text-align:right;margin-top:1.4em}
+.paper .sign{text-align:right;margin-top:.5em;padding-right:.2em;font-family:var(--sign);font-weight:400;font-size:3.1em;line-height:1.1}
+.paper .ps{margin-top:1.6em;font-size:.94em}
+/* la penna scopre la parola da sinistra; finito il tratto il ritaglio sparisce
+   (Safari non allarga il ritaglio oltre la parola: puntini e accenti finali compaiono lì) */
+.w{display:inline-block;text-indent:0;padding:.4em .35em;margin:-.4em -.35em;-webkit-clip-path:inset(-.6em 100% -.6em -.2em);clip-path:inset(-.6em 100% -.6em -.2em);
+  transition:-webkit-clip-path var(--d,300ms) linear,clip-path var(--d,300ms) linear}
+.sign .w{padding:.4em .6em;margin:-.4em -.6em;-webkit-clip-path:inset(-1em 100% -1em -1em);clip-path:inset(-1em 100% -1em -1em)}
+.w.on{-webkit-clip-path:inset(-.6em -.6em -.6em -.2em);clip-path:inset(-.6em -.6em -.6em -.2em);animation:dry 2s ease-out forwards}
+.sign .w.on{-webkit-clip-path:inset(-1em -1em -1em -1em);clip-path:inset(-1em -1em -1em -1em)}
+@keyframes dry{from{color:var(--ink-wet)}to{color:var(--ink)}}
+.paper .w.inked,.paper.done .w{-webkit-clip-path:none;clip-path:none}
+.paper.done .w{animation:none;transition:none}
+#read.writing .paper{cursor:pointer}
+
+.skip{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:15;display:flex;justify-content:center;pointer-events:none;opacity:0;transition:opacity .5s}
+.skip span{font:italic 400 15px/1.4 var(--serif);letter-spacing:.02em;color:var(--gold-hi);background:rgba(12,15,21,.84);padding:7px 18px;border-radius:999px}
+.skip.on{opacity:1}
+
+.noanim,.noanim *{transition:none!important;animation:none!important}
+@media (prefers-reduced-motion:reduce){.wrap{animation:none}.back.ready .seal{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="desk" aria-hidden="true"></div>
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="waxG" cx="38%" cy="34%" r="75%"><stop offset="0" stop-color="#43578f"/><stop offset=".55" stop-color="#22305a"/><stop offset="1" stop-color="#121a33"/></radialGradient>
+    <radialGradient id="waxIn" cx="60%" cy="62%" r="70%"><stop offset="0" stop-color="#2f4175"/><stop offset="1" stop-color="#1a2547"/></radialGradient>
+  </defs>
+</svg>
+
+<main id="stage">
+  <div class="wrap">
+    <div class="scene">
+      <div class="card" id="card" role="button" tabindex="0" aria-label="Busta chiusa, tocca per girarla">
+        <div class="face front">
+          <p class="to"><span class="to-name" id="to-name"></span></p>
+        </div>
+        <div class="face back" id="back">
+          <div class="inside"></div>
+          <div class="flap" id="flap">
+            <div class="fl out"><i class="shape"></i></div>
+            <div class="fl in"><i class="shape"></i></div>
+          </div>
+          <div class="letter" id="letter"></div>
+          <div class="pocket"><i class="pk l"></i><i class="pk r"></i><i class="pk b"></i></div>
+          <button class="seal" id="seal" type="button" tabindex="-1" aria-label="Rompi il sigillo"><span class="half h1"></span><span class="half h2"></span></button>
+        </div>
+      </div>
+    </div>
+    <p class="hint" id="hint">Tocca la busta</p>
+  </div>
+</main>
+
+<div id="foldwrap" aria-hidden="true"><div class="fold" id="fold"><div class="pn t"></div><div class="pn m"></div><div class="pn b"></div></div></div>
+
+<section id="read" aria-label="Lettera">
+  <div class="sheet">
+    <article class="paper" id="paper">
+      <p class="date" id="l-date"></p>
+      <div class="body" id="l-body"></div>
+      <p class="closing" id="l-closing"></p>
+      <p class="sign" id="l-sign"></p>
+      <p class="ps" id="l-ps"></p>
+    </article>
+  </div>
+</section>
+<div class="skip" id="skip"><span>Tocca il foglio per leggere tutto</span></div>
+
+<script>
+// ===== LA LETTERA: cambia solo qui =====
+const LETTERA = {
+  busta: "Ivana",             // il nome sul davanti della busta
+  iniziale: "G",              // incisa sul sigillo
+  data: "21 ottobre 2026",    // in alto a destra sul foglio
+  testo: [
+    "Ti scrivo qui perché, quando ne parliamo di persona, finisco per perdere la calma, e non voglio che accada di nuovo. Avrei voluto scriverti una lettera a mano, ma con la mia calligrafia avresti faticato non poco a decifrarla.",
+    "Mi sono domandato perché certe cose mi turbino così tanto. Per esempio, quando penso a qualcuno che vive il sesso con leggerezza, dentro di me scatta qualcosa. E mi sono chiesto da dove nasca.",
+    "In un primo momento ho pensato che dipendesse soltanto dall’educazione che ho ricevuto. In parte è così, ma non spiega tutto.",
+    "Allora ho cercato di capire che cosa provo davvero. La parola più giusta che ho trovato è distanza. Non disprezzo: soltanto distanza.",
+    "Forse c’entra anche il fatto che non ho esperienza? In parte, forse sì. Eppure, anche provando a immaginarmi diverso, so che non vivrei mai il sesso in quel modo.",
+    "Per me il sesso viene dopo che ci si è scelti. Prima ti scelgo, e poi diventa un modo per esserci ancora più vicini.",
+    "Credo che la mia reazione nasca proprio da qui: se per me è qualcosa di così importante, quando vedo che per qualcun altro non lo è, ho quasi l’impressione che lo stia sprecando. Ma questo è il mio modo di vedere le cose, non il tuo. Tu non mi stai togliendo nulla: gli attribuisci semplicemente un significato diverso. E non vali meno per questo.",
+    "Se qualche volta ti ho fatto sentire sbagliata, mi dispiace sinceramente. Quella reazione riguardava me e il mio sguardo sulle cose, non te.",
+    "Non so ancora come le nostre idee possano trovare un punto d’incontro, ma mi piacerebbe scoprirlo insieme a te, con calma."
+  ],
+  saluto: "",                 // vuoto = nessuna formula prima della firma
+  firma: "Gabriele",
+  ps: ""
+};
+// =======================================
+
+const $ = s => document.querySelector(s);
+const card = $('#card'), back = $('#back'), flap = $('#flap'), letter = $('#letter'), seal = $('#seal'),
+      hint = $('#hint'), stage = $('#stage'), fold = $('#fold'), read = $('#read'), paper = $('#paper'),
+      skip = $('#skip');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let state = 'front', words = [], skipped = false, follow = true, pending = null;
+
+function wait(ms){
+  return new Promise(r => { const id = setTimeout(() => { pending = null; r(); }, ms); pending = { id, r }; });
+}
+
+// grana della carta
+(function(){
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const x = c.getContext('2d'), d = x.createImageData(128, 128);
+  for (let i = 0; i < d.data.length; i += 4){
+    const v = Math.random() * 255 | 0;
+    d.data[i] = d.data[i+1] = d.data[i+2] = v; d.data[i+3] = Math.random() * 10 | 0;
+  }
+  x.putImageData(d, 0, 0);
+  document.documentElement.style.setProperty('--noise', `url(${c.toDataURL()})`);
+})();
+
+// sigillo di ceralacca: bordo irregolare, iniziale incisa
+function blob(cx, cy, r, n, k){
+  const p = [];
+  for (let i = 0; i < n; i++){
+    const a = i / n * Math.PI * 2;
+    const f = 1 + .06 * Math.sin(a * 3 + k) + .04 * Math.sin(a * 7 + k * 2) + .03 * Math.sin(a * 11 + k * 3);
+    p.push([cx + Math.cos(a) * r * f, cy + Math.sin(a) * r * f]);
+  }
+  const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  const f = v => v.toFixed(2);
+  let m = mid(p[n-1], p[0]), d = `M${f(m[0])} ${f(m[1])}`;
+  for (let i = 0; i < n; i++){ const q = mid(p[i], p[(i+1) % n]); d += ` Q${f(p[i][0])} ${f(p[i][1])} ${f(q[0])} ${f(q[1])}`; }
+  return d + 'Z';
+}
+const B_PATH = blob(50, 50, 44, 28, 1.7);
+const sealSvg = `<svg viewBox="0 0 100 100" aria-hidden="true">
+  <path d="${B_PATH}" fill="url(#waxG)"/>
+  <path d="${B_PATH}" fill="none" stroke="#070b18" stroke-width="1" opacity=".35"/>
+  <circle cx="50" cy="50" r="29" fill="url(#waxIn)" stroke="#0c1328" stroke-width="2.4" stroke-opacity=".6"/>
+  <circle cx="49.3" cy="49.3" r="29" fill="none" stroke="#8a9dd0" stroke-width=".9" opacity=".45"/>
+  <text class="seal-l hi" x="50.8" y="63.3" text-anchor="middle"></text>
+  <text class="seal-l" x="50" y="62.5" text-anchor="middle"></text></svg>`;
+document.querySelectorAll('.half').forEach(h => h.innerHTML = sealSvg);
+
+function fill(){
+  $('#to-name').textContent = LETTERA.busta;
+  document.querySelectorAll('.seal-l').forEach(t => t.textContent = LETTERA.iniziale);
+  $('#l-date').textContent = LETTERA.data;
+  const body = $('#l-body'); body.textContent = '';
+  LETTERA.testo.forEach(t => { const p = document.createElement('p'); p.textContent = t; body.appendChild(p); });
+  const cl = $('#l-closing'); cl.textContent = LETTERA.saluto; cl.hidden = !LETTERA.saluto;
+  const sg = $('#l-sign'); sg.textContent = LETTERA.firma; sg.hidden = !LETTERA.firma;
+  const ps = $('#l-ps'); ps.textContent = LETTERA.ps; ps.hidden = !LETTERA.ps;
+
+  // ogni parola diventa un tratto di penna, con un filo di irregolarità
+  let seed = 11;
+  const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+  words = [];
+  paper.querySelectorAll('.date, .body p, .closing, .sign, .ps').forEach(el => {
+    if (el.hidden) return;
+    const parts = el.textContent.trim().split(/\s+/);
+    el.textContent = '';
+    parts.forEach((t, i) => {
+      const s = document.createElement('span');
+      s.className = 'w'; s.textContent = t;
+      s.style.transform = `translateY(${((rnd() - .5) * 1.2).toFixed(2)}px) rotate(${((rnd() - .5) * .8).toFixed(2)}deg)`;
+      if (i === parts.length - 1) s.dataset.end = '1';
+      el.appendChild(s);
+      if (i < parts.length - 1) el.appendChild(document.createTextNode(' '));
+      words.push(s);
+    });
+  });
+}
+
+// la parte di foglio visibile a schermo: la lettera piegata in tre ne ha le proporzioni
+function visibleSheet(){
+  const r = paper.getBoundingClientRect();
+  return { left: r.left, top: r.top, w: r.width, h: Math.min(r.height, innerHeight - r.top - 10) };
+}
+function sizeLetter(){
+  const B = visibleSheet();
+  const lh = Math.min(letter.offsetWidth * (B.h / 3) / B.w, back.offsetHeight * .86);
+  letter.style.height = lh + 'px';
+  paper.style.setProperty('--c1', (B.h / 3) + 'px');
+  paper.style.setProperty('--c2', (B.h * 2 / 3) + 'px');
+}
+
+async function flip(){
+  state = 'flipping';
+  hint.classList.add('off');
+  sizeLetter();
+  if (!reduce){ card.classList.add('flipping'); await wait(1050); }
+  card.classList.add('flat'); card.classList.remove('flipping');
+  card.setAttribute('aria-label', 'Busta chiusa con sigillo, tocca per aprirla');
+  seal.tabIndex = 0;
+  back.classList.add('ready');
+  hint.textContent = 'Rompi il sigillo';
+  hint.classList.remove('off');
+  state = 'back';
+}
+
+async function open(){
+  state = 'opening';
+  hint.classList.add('off');
+  back.classList.remove('ready');
+  sizeLetter();
+  if (reduce){ stage.classList.add('away'); read.classList.add('show'); finish(); return; }
+  seal.classList.add('broken');
+  await wait(420);
+  back.classList.add('opening');
+  flap.classList.add('up');
+  setTimeout(() => flap.classList.add('under'), 440);
+  await wait(850);
+  letter.style.transform = `translateY(${-(letter.offsetTop + letter.offsetHeight + 10)}px)`;
+  await wait(1150);
+  await unfold();
+}
+
+async function unfold(){
+  read.scrollTop = 0;
+  const B = visibleSheet(), A = letter.getBoundingClientRect();
+  const s = letter.offsetWidth / B.w;
+  const tx = (A.left + A.width / 2) - (B.left + B.w / 2);
+  const ty = (A.top + A.height / 2) - (B.top + B.h / 2);
+  fold.classList.add('noanim');
+  Object.assign(fold.style, {
+    left: B.left + 'px', top: B.top + 'px', width: B.w + 'px', height: B.h + 'px',
+    transform: `translate(${tx}px,${ty}px) rotate(-1.5deg) scale(${s})`, visibility: 'visible'
+  });
+  fold.classList.add('folded');
+  letter.style.visibility = 'hidden';
+  fold.getBoundingClientRect();
+  fold.classList.remove('noanim');
+  fold.style.transition = 'transform .9s cubic-bezier(.3,.7,.2,1)';
+  stage.classList.add('away');
+  fold.style.transform = 'translate(0px,0px) rotate(0deg) scale(1)';
+  await wait(820);
+  fold.classList.add('t-open');
+  await wait(560);
+  fold.classList.add('b-open');
+  await wait(750);
+  read.classList.add('show');
+  fold.style.visibility = 'hidden';
+  await wait(600);
+  write();
+}
+
+async function write(){
+  state = 'writing'; skipped = false; follow = true;
+  skip.classList.add('on');
+  read.classList.add('writing');
+  for (const w of words){
+    if (skipped) break;
+    const t = w.textContent, last = t.slice(-1);
+    const d = w.closest('.sign') ? 1600 : Math.max(120, t.length * 36);
+    w.style.setProperty('--d', d + 'ms');
+    w.classList.add('on');
+    track(w);
+    let gap = 60;
+    if (/[,;:]/.test(last)) gap = 300;
+    if (/[.!?…]/.test(last)) gap = 560;
+    if (w.dataset.end) gap = Math.max(gap, 750);
+    await wait(d + gap);
+    w.classList.add('inked');
+  }
+  finish();
+}
+
+function finish(){
+  if (state === 'done') return;
+  state = 'done'; skipped = true;
+  words.forEach(w => w.classList.add('on'));
+  paper.classList.add('done');
+  read.classList.remove('writing');
+  skip.classList.remove('on');
+}
+
+function skipNow(){
+  skipped = true;
+  if (pending){ clearTimeout(pending.id); const r = pending.r; pending = null; r(); }
+}
+
+// tiene la riga che si sta scrivendo a metà schermo; se chi legge scorre da sé si ferma,
+// e riprende quando la penna torna in vista
+let lastUserScroll = 0;
+function track(w){
+  const r = w.getBoundingClientRect();
+  if (!follow){
+    if (Date.now() - lastUserScroll > 2500 && r.top > 0 && r.bottom < innerHeight) follow = true;
+    else return;
+  }
+  if (r.bottom > innerHeight * .7) read.scrollBy({ top: r.bottom - innerHeight * .45, behavior: 'smooth' });
+}
+
+card.addEventListener('click', () => { if (state === 'front') flip(); else if (state === 'back') open(); });
+card.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target === card){ e.preventDefault(); card.click(); }
+});
+read.addEventListener('click', () => { if (state === 'writing') skipNow(); });
+['wheel', 'touchmove'].forEach(ev => read.addEventListener(ev, () => {
+  if (state === 'writing'){ follow = false; lastUserScroll = Date.now(); }
+}, { passive: true }));
+addEventListener('resize', () => { if (state === 'front' || state === 'back') sizeLetter(); });
+
+fill();
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(sizeLetter);
+</script>
+</body>
+</html>
